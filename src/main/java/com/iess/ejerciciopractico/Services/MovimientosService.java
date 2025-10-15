@@ -69,7 +69,7 @@ public class MovimientosService {
                 reporteObjeto.setTipoMovimiento(mov.getTipoMovimiento());
                 reporteObjeto.setSaldoInicial(saldoInicial);
                 reporteObjeto.setEstado(mov.getCuenta().getEstado());
-                reporteObjeto.setMovimiento(mov.getValor());
+                reporteObjeto.setMovimiento(mov.getTipoMovimiento().equalsIgnoreCase("RETIRO") ? -mov.getValor() : mov.getValor());
                 reporteObjeto.setSaldoDisponible(mov.getSaldo());
                 reporteArray.add(reporteObjeto);
             }
@@ -78,11 +78,12 @@ public class MovimientosService {
         return reporteArray;
     }
 
-    public Movimientos obtenerMovimiento(String identificacion) {
-        Movimientos movimiento = movimientosRepo.findByCuenta_Persona_Identificacion(identificacion)
-            .orElseThrow(() -> new RuntimeException("No encontrada"));
-
-        return movimiento;
+    public List<Movimientos> obtenerMovimiento(String identificacion) {
+        List<Movimientos> movimientos = movimientosRepo.findByCuenta_Persona_Identificacion(identificacion);
+        if (movimientos.isEmpty()) {
+            throw new RuntimeException("No encontrada");
+        }
+        return movimientos;
     }
 
     public ReporteMovimientosDTO generarMovimiento(CrearMovimientoDTO movimientoDTO) {

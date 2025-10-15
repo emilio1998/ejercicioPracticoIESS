@@ -1,6 +1,7 @@
 package com.iess.ejerciciopractico.Controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,9 @@ public class F2F3Controller {
     private MovimientosService movimientosService;
 
     @GetMapping(value = "/obtenerMovimiento/{identificacion}")
-    public ResponseEntity<Movimientos> obtenerMovimiento(@PathVariable String identificacion) {
-        Movimientos movimiento = movimientosService.obtenerMovimiento(identificacion);
-        return ResponseEntity.ok(movimiento);
+    public ResponseEntity<List<Movimientos>> obtenerMovimiento(@PathVariable String identificacion) {
+        List<Movimientos> movimientos = movimientosService.obtenerMovimiento(identificacion);
+        return ResponseEntity.ok(movimientos);
     }
 
     @PostMapping(value = "/movimientos")

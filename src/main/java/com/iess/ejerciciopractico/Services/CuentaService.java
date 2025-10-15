@@ -39,6 +39,11 @@ public class CuentaService {
         if(!esSoloNumeros(cuentaDTO.getNumero_cuenta()))
             throw new RuntimeException("El número de cuenta solo debe tener números");
 
+        cuentaRepo.findByPersona_Identificacion(cuentaDTO.getIdentificacion())
+            .ifPresent(c -> {
+                throw new RuntimeException("La cuenta con el numero de identificación "+cuentaDTO.getIdentificacion()+" ya existe");
+            });
+
         Persona persona = new Persona();
         persona.setIdentificacion(cliente.getIdentificacion());
         persona.setNombre(cliente.getNombre());
